@@ -5,18 +5,23 @@ from conans import ConanFile, tools, CMake
 class MuparserConan(ConanFile):
     name = "muparser"
     version = "2.2.6"
+    description = "Fast Math Parser Library"
+    topics = ("conan", "muparser", "math", "parser")
+    url = "https://github.com/conan-community/conan-muparser"
+    homepage = "http://beltoforion.de/article.php?a=muparser"
+    author = "Conan Community"
+    license = "MIT"
+    exports = ["LICENSE.md"]
+    generators = "cmake"
+
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False]}
     default_options = {"shared": False}
-    description = "Fast Math Parser Library"
-    url = "https://github.com/conan-community/conan-muparser"
-    homepage = "http://beltoforion.de/article.php?a=muparser"
-    license = "MIT"
-    exports = ["LICENSE.md"]
+
     _source_subfolder = "source_subfolder"
 
     def source(self):
-        tools.get("https://github.com/beltoforion/%s/archive/v%s.zip" % (self.name, self.version))
+        tools.get("https://github.com/beltoforion/{}/archive/v{}.zip".format(self.name, self.version), sha256="daf4a937abdc33b361d4a2fbc79bf311d5486ebc87c56596130e295db1302303")
         os.rename(self.name + "-" + self.version, self._source_subfolder)
 
     def build(self):
