@@ -29,19 +29,22 @@ class MuparserConan(ConanFile):
                   sha256="daf4a937abdc33b361d4a2fbc79bf311d5486ebc87c56596130e295db1302303")
         os.rename(self.name + "-" + self.version, self._source_subfolder)
 
-    def build(self):
+    def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
+        cmake.definitions["ENABLE_SAMPLES"] = False
         cmake.configure(source_folder=self._source_subfolder)
+        return cmake
+
+    def build(self):
+        cmake = self._configure_cmake()
         cmake.build()
 
     def package(self):
         self.copy(pattern="License.txt", src=self._source_subfolder, dst="licenses")
-        self.copy(pattern="*.h", src="%s/include" % self._source_subfolder, dst="include")
-        self.copy(pattern="*.lib", src=str(self.settings.build_type), dst="lib")
-        self.copy(pattern="*.dll", src=str(self.settings.build_type), dst="bin")
-        self.copy(pattern="libmuparser.dll.a", dst="lib")
-        self.copy(pattern="libmuparser.dll", dst="bin")
+        cmake = self._configure_cmake()
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.defines.append("MUPARSER_DLL" if self.options.shared else "MUPARSER_STATIC")
