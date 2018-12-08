@@ -30,9 +30,9 @@ class MuparserConan(ConanFile):
         os.rename(self.name + "-" + self.version, self._source_subfolder)
 
         tools.replace_in_file(os.path.join(self._source_subfolder, 'CMakeLists.txt'),
-                              'cmake_minimum_required (VERSION 3.1.0)',
-                              'cmake_minimum_required (VERSION 3.1.0)\n'
-                              'include(conanbuildinfo.cmake)\n'
+                              'project(muParserProject)',
+                              'project(muParserProject)\n'
+                              'include(${CMAKE_CURRENT_SOURCE_DIR}/../conanbuildinfo.cmake)\n'
                               'conan_basic_setup()')
 
     def _configure_cmake(self):
