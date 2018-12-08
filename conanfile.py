@@ -15,13 +15,18 @@ class MuparserConan(ConanFile):
     generators = "cmake"
 
     settings = "os", "arch", "compiler", "build_type"
-    options = {"shared": [True, False]}
-    default_options = {"shared": False}
+    options = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = {"shared": False, "fPIC": True}
 
     _source_subfolder = "source_subfolder"
 
+    def config_options(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
+
     def source(self):
-        tools.get("https://github.com/beltoforion/{}/archive/v{}.zip".format(self.name, self.version), sha256="daf4a937abdc33b361d4a2fbc79bf311d5486ebc87c56596130e295db1302303")
+        tools.get("https://github.com/beltoforion/{}/archive/v{}.zip".format(self.name, self.version),
+                  sha256="daf4a937abdc33b361d4a2fbc79bf311d5486ebc87c56596130e295db1302303")
         os.rename(self.name + "-" + self.version, self._source_subfolder)
 
     def build(self):
