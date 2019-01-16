@@ -37,7 +37,6 @@ class MuparserConan(ConanFile):
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
         cmake.definitions["ENABLE_SAMPLES"] = False
         cmake.configure(source_folder=self._source_subfolder)
         return cmake
