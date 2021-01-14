@@ -13,6 +13,7 @@ class MuparserConan(ConanFile):
     license = "MIT"
     exports = ["LICENSE.md"]
     generators = "cmake"
+    deprecated = "muparser/2.3.2@"
 
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
